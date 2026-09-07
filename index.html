@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Para el amor de mi vida ❤️</title>
 
-  <!-- SDKs de Firebase compatibles con HTML directo -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-
   <style>
     * {
       box-sizing: border-box;
@@ -26,6 +21,7 @@
       position: relative;
     }
 
+    /* Contenedor de corazones flotantes */
     #hearts-container {
       position: fixed;
       top: 0;
@@ -45,17 +41,27 @@
     }
 
     @keyframes float {
-      0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
-      20% { opacity: 0.7; }
-      80% { opacity: 0.7; }
-      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+      0% {
+        transform: translateY(105vh) rotate(0deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.7;
+      }
+      80% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     header {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 70px 20px 30px;
+      padding: 80px 20px 40px;
     }
 
     .titulo {
@@ -84,102 +90,12 @@
       50% { transform: scale(1.2); }
     }
 
-    /* BANDEJA DE SUBIDA DE FOTOS */
-    .bandeja-contenedor {
-      position: relative;
-      z-index: 2;
-      max-width: 600px;
-      margin: 10px auto 30px;
-      padding: 0 20px;
-      text-align: center;
-    }
-
-    .btn-toggle-bandeja {
-      background: #ffffff;
-      color: #d94f70;
-      border: 2px dashed #d94f70;
-      padding: 12px 25px;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(217, 79, 112, 0.15);
-    }
-
-    .btn-toggle-bandeja:hover {
-      background: #ffe4ec;
-      transform: translateY(-2px);
-    }
-
-    .panel-bandeja {
-      display: none;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(5px);
-      padding: 25px;
-      border-radius: 20px;
-      margin-top: 20px;
-      box-shadow: 0 10px 30px rgba(160, 80, 110, 0.2);
-      text-align: left;
-    }
-
-    .panel-bandeja h3 {
-      color: #d94f70;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .grupo-campo {
-      margin-bottom: 15px;
-    }
-
-    .grupo-campo label {
-      display: block;
-      font-size: 0.9rem;
-      color: #815466;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .grupo-campo input[type="text"],
-    .grupo-campo input[type="file"] {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #ffccd5;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      outline: none;
-      background: #fff;
-    }
-
-    .btn-guardar-cuadro {
-      width: 100%;
-      background: #d94f70;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn-guardar-cuadro:hover {
-      background: #b83f5d;
-    }
-
-    .btn-guardar-cuadro:disabled {
-      background: #cca0ac;
-      cursor: not-allowed;
-    }
-
-    /* GALERÍA DE FOTOS */
+    /* Galería */
     .galeria {
       position: relative;
       z-index: 1;
       max-width: 1100px;
-      margin: 10px auto 30px;
+      margin: 20px auto;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -187,7 +103,6 @@
     }
 
     .foto {
-      position: relative;
       background: white;
       padding: 12px;
       border-radius: 18px;
@@ -197,7 +112,9 @@
       cursor: pointer;
     }
 
-    .foto:nth-child(even) { transform: rotate(1deg); }
+    .foto:nth-child(even) {
+      transform: rotate(1deg);
+    }
 
     .foto:hover {
       transform: translateY(-8px) rotate(0deg) scale(1.02);
@@ -219,28 +136,7 @@
       color: #85576a;
     }
 
-    .btn-eliminar {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      background: rgba(217, 79, 112, 0.85);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      z-index: 3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-eliminar:hover {
-      background: #a02040;
-    }
-
-    /* CARTA DE AMOR */
+    /* Carta */
     .carta {
       position: relative;
       z-index: 1;
@@ -254,8 +150,16 @@
       text-align: center;
     }
 
-    .carta h2 { color: #d94f70; margin-bottom: 20px; font-size: 2rem; }
-    .carta p { font-size: 1.1rem; line-height: 1.9; }
+    .carta h2 {
+      color: #d94f70;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .carta p {
+      font-size: 1.1rem;
+      line-height: 1.9;
+    }
 
     .firma {
       margin-top: 25px;
@@ -272,6 +176,7 @@
       color: #9b6578;
     }
 
+    /* Botón música */
     .musica {
       margin-top: 20px;
       border: none;
@@ -289,34 +194,50 @@
     .musica:hover {
       background: #b83f5d;
       transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(217, 79, 112, 0.4);
     }
 
+    /* Modal / Lightbox */
     .modal {
       display: none;
       position: fixed;
       z-index: 100;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(4px);
-      justify-content: center; align-items: center;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
     }
 
     .modal img {
-      max-width: 90%; max-height: 85vh;
+      max-width: 90%;
+      max-height: 85vh;
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .modal-close {
-      position: absolute; top: 20px; right: 30px;
-      color: white; font-size: 40px; cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
       font-weight: bold;
+      cursor: pointer;
     }
 
     @media (max-width: 600px) {
-      header { padding-top: 55px; }
-      .foto img { height: 300px; }
+      header {
+        padding-top: 55px;
+      }
+
+      .foto img {
+        height: 300px;
+      }
     }
   </style>
 </head>
@@ -325,6 +246,7 @@
 
   <div id="hearts-container"></div>
 
+  <!-- Encabezado -->
   <header>
     <div class="corazon">❤️</div>
     <h1 class="titulo">Para mi niña hermosa</h1>
@@ -335,38 +257,38 @@
     </p>
   </header>
 
-  <!-- BANDEJA DE SUBIDA -->
-  <section class="bandeja-contenedor">
-    <button class="btn-toggle-bandeja" onclick="toggleBandeja()">
-      📸 ✨ Abrir bandeja para agregar más fotos
-    </button>
+  <!-- GALERÍA -->
+  <section class="galeria">
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="1.jpeg" alt="Nuestro recuerdo">
+      <p>Uno de mis momentos favoritos contigo ❤️</p>
+    </div>
 
-    <div class="panel-bandeja" id="panelBandeja">
-      <h3>🖼️ Agregar un nuevo cuadro de foto</h3>
-      
-      <div class="grupo-campo">
-        <label>1. Selecciona una foto desde tu celular o PC:</label>
-        <input type="file" id="inputFotoArchivo" accept="image/*">
-      </div>
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="2.jpeg" alt="Mi niña">
+      <p>Qué bonito es compartir la vida contigo ✨</p>
+    </div>
 
-      <div class="grupo-campo">
-        <label>2. O pega el enlace (URL) de una foto:</label>
-        <input type="text" id="inputFotoUrl" placeholder="https://ejemplo.com/mi-foto.jpg">
-      </div>
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="3.jpeg" alt="Un momento juntos">
+      <p>Tu sonrisa hace bonito cualquier día 🌸</p>
+    </div>
 
-      <div class="grupo-campo">
-        <label>Mensaje o frase bonita para la foto:</label>
-        <input type="text" id="inputFotoTexto" placeholder="Escribe un recuerdo bonito aquí... ❤️">
-      </div>
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="4.jpeg" alt="Un recuerdo">
+      <p>Contigo, hasta los momentos simples son especiales 💕</p>
+    </div>
 
-      <button class="btn-guardar-cuadro" id="btnSubir" onclick="subirFotoAFirebase()">
-        ❤️ Guardar en la Base de Datos
-      </button>
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="5.jpeg" alt="Nuestro momento">
+      <p>Una foto más de la persona que adoro 🥰</p>
+    </div>
+
+    <div class="foto" onclick="abrirModal(this)">
+      <img src="6.jpeg" alt="Mi amor">
+      <p>Y espero que tengamos muchísimas más ❤️</p>
     </div>
   </section>
-
-  <!-- GALERÍA DE FOTOS (Carga dinámica desde Firebase) -->
-  <section class="galeria" id="galeriaFotos"></section>
 
   <!-- CARTA -->
   <section class="carta">
@@ -398,165 +320,19 @@
     </button>
   </footer>
 
+  <!-- Música -->
   <audio id="cancion" loop>
     <source src="Can't take my eyes off you.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Modal para ver fotos ampliadas -->
   <div class="modal" id="modalFoto" onclick="cerrarModal()">
     <span class="modal-close">&times;</span>
     <img id="imgModal" src="" alt="Vista ampliada">
   </div>
 
   <script>
-    // Configuración con tus credenciales reales
-    const firebaseConfig = {
-      apiKey: "AIzaSyD25eqgX3x0kod85cLX5WnVc0hqbbyMjyM",
-      authDomain: "mioo-d9967.firebaseapp.com",
-      projectId: "mioo-d9967",
-      storageBucket: "mioo-d9967.firebasestorage.app",
-      messagingSenderId: "896783663188",
-      appId: "1:896783663188:web:3aae2c37f0cb7fb0066dc1",
-      measurementId: "G-6MF7R488GV"
-    };
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-
-    // ESCUCHAR CAMBIOS EN TIEMPO REAL DESDE CUALQUIER DISPOSITIVO
-    db.collection("fotos").orderBy("fecha", "asc").onSnapshot((snapshot) => {
-      const galeria = document.getElementById('galeriaFotos');
-      galeria.innerHTML = ""; 
-
-      if (snapshot.empty) {
-        galeria.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #85576a;'>Aún no hay fotos. ¡Sé el primero en subir una! ❤️</p>";
-        return;
-      }
-
-      snapshot.forEach((doc) => {
-        const datos = doc.data();
-        crearElementoFoto(doc.id, datos.url, datos.texto);
-      });
-    }, (error) => {
-      console.error("Error al conectar con la base de datos:", error);
-    });
-
-    // SUBIR FOTO
-    async function subirFotoAFirebase() {
-      const archivoInput = document.getElementById('inputFotoArchivo');
-      const urlInput = document.getElementById('inputFotoUrl').value.trim();
-      const textoInput = document.getElementById('inputFotoTexto').value.trim();
-      const btnSubir = document.getElementById('btnSubir');
-
-      const mensaje = textoInput || "Un momento especial más contigo ❤️";
-
-      try {
-        btnSubir.disabled = true;
-        btnSubir.innerText = "⏳ Subiendo foto...";
-
-        let urlFinal = urlInput;
-
-        // Subir archivo a Storage si se seleccionó una imagen
-        if (archivoInput.files[0]) {
-          const archivo = archivoInput.files[0];
-          const nombreUnico = Date.now() + "_" + archivo.name;
-          const refStorage = storage.ref().child("fotos/" + nombreUnico);
-          
-          await refStorage.put(archivo);
-          urlFinal = await refStorage.getDownloadURL();
-        }
-
-        if (!urlFinal) {
-          alert("Por favor selecciona una imagen desde tu celular o pega un enlace.");
-          btnSubir.disabled = false;
-          btnSubir.innerText = "❤️ Guardar en la Base de Datos";
-          return;
-        }
-
-        // Guardar en la Base de Datos (Firestore)
-        await db.collection("fotos").add({
-          url: urlFinal,
-          texto: mensaje,
-          fecha: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        limpiarFormulario();
-        toggleBandeja();
-
-      } catch (error) {
-        console.error("Error al subir:", error);
-        alert("Error al subir la foto. Asegúrate de actualizar las Reglas de Firebase. Error: " + error.message);
-      } finally {
-        btnSubir.disabled = false;
-        btnSubir.innerText = "❤️ Guardar en la Base de Datos";
-      }
-    }
-
-    // MOSTRAR FOTOS EN PANTALLA
-    function crearElementoFoto(id, url, texto) {
-      const galeria = document.getElementById('galeriaFotos');
-      const divFoto = document.createElement('div');
-      divFoto.classList.add('foto');
-      divFoto.setAttribute('data-id', id);
-      divFoto.onclick = function() { abrirModal(this); };
-
-      divFoto.innerHTML = `
-        <button class="btn-eliminar" onclick="eliminarCuadro(event, '${id}')">🗑️</button>
-        <img src="${url}" alt="Recuerdo">
-        <p>${texto}</p>
-      `;
-
-      galeria.appendChild(divFoto);
-    }
-
-    // ELIMINAR FOTO
-    async function eliminarCuadro(event, id) {
-      event.stopPropagation();
-      if (confirm("¿Quieres borrar esta foto para ambos?")) {
-        try {
-          await db.collection("fotos").doc(id).delete();
-        } catch (e) {
-          alert("Error al borrar: " + e.message);
-        }
-      }
-    }
-
-    function limpiarFormulario() {
-      document.getElementById('inputFotoArchivo').value = "";
-      document.getElementById('inputFotoUrl').value = "";
-      document.getElementById('inputFotoTexto').value = "";
-    }
-
-    function toggleBandeja() {
-      const panel = document.getElementById('panelBandeja');
-      panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function abrirModal(elemento) {
-      const img = elemento.querySelector('img');
-      document.getElementById('imgModal').src = img.src;
-      document.getElementById('modalFoto').style.display = 'flex';
-    }
-
-    function cerrarModal() {
-      document.getElementById('modalFoto').style.display = 'none';
-    }
-
-    function reproducirMusica() {
-      const cancion = document.getElementById("cancion");
-      const btn = document.getElementById("btnMusica");
-
-      if (cancion.paused) {
-        cancion.play();
-        btn.innerHTML = "⏸️ Pausar música";
-      } else {
-        cancion.pause();
-        btn.innerHTML = "🎵 Reproducir nuestra canción";
-      }
-    }
-
-    // CORAZONES FLOTANTES
+    // Generador continuo de corazones flotantes
     const heartsContainer = document.getElementById('hearts-container');
     const heartSymbols = ['♥', '💖', '💕', '💗'];
 
@@ -581,6 +357,33 @@
     }
 
     setInterval(createHeart, 500);
+
+    // Control de audio
+    function reproducirMusica() {
+      const cancion = document.getElementById("cancion");
+      const btn = document.getElementById("btnMusica");
+
+      if (cancion.paused) {
+        cancion.play();
+        btn.innerHTML = "⏸️ Pausar música";
+      } else {
+        cancion.pause();
+        btn.innerHTML = "🎵 Reproducir nuestra canción";
+      }
+    }
+
+    // Control de visor de fotos
+    function abrirModal(elemento) {
+      const img = elemento.querySelector('img');
+      const modal = document.getElementById('modalFoto');
+      const imgModal = document.getElementById('imgModal');
+      imgModal.src = img.src;
+      modal.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalFoto').style.display = 'none';
+    }
   </script>
 
 </body>
