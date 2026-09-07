@@ -45,12 +45,8 @@
         transform: translateY(105vh) rotate(0deg);
         opacity: 0;
       }
-      20% {
-        opacity: 0.7;
-      }
-      80% {
-        opacity: 0.7;
-      }
+      20% { opacity: 0.7; }
+      80% { opacity: 0.7; }
       100% {
         transform: translateY(-10vh) rotate(360deg);
         opacity: 0;
@@ -61,7 +57,7 @@
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 80px 20px 40px;
+      padding: 70px 20px 30px;
     }
 
     .titulo {
@@ -90,12 +86,117 @@
       50% { transform: scale(1.2); }
     }
 
-    /* Galería */
+    /* SECCIÓN BANDEJA / FORMULARIO */
+    .bandeja-contenedor {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      margin: 10px auto 30px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .btn-toggle-bandeja {
+      background: #ffffff;
+      color: #d94f70;
+      border: 2px dashed #d94f70;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(217, 79, 112, 0.15);
+    }
+
+    .btn-toggle-bandeja:hover {
+      background: #ffe4ec;
+      transform: translateY(-2px);
+    }
+
+    .panel-bandeja {
+      display: none;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      padding: 25px;
+      border-radius: 20px;
+      margin-top: 20px;
+      box-shadow: 0 10px 30px rgba(160, 80, 110, 0.2);
+      text-align: left;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10deg); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-bandeja h3 {
+      color: #d94f70;
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .grupo-campo {
+      margin-bottom: 15px;
+    }
+
+    .grupo-campo label {
+      display: block;
+      font-size: 0.9rem;
+      color: #815466;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .grupo-campo input[type="text"],
+    .grupo-campo input[type="file"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ffccd5;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+      color: #5a3545;
+    }
+
+    .grupo-campo input[type="text"]:focus {
+      border-color: #d94f70;
+    }
+
+    .divisor-o {
+      text-align: center;
+      color: #a07080;
+      font-size: 0.85rem;
+      margin: 8px 0;
+    }
+
+    .btn-guardar-cuadro {
+      width: 100%;
+      background: #d94f70;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .btn-guardar-cuadro:hover {
+      background: #b83f5d;
+    }
+
+    /* GALERÍA DE FOTOS */
     .galeria {
       position: relative;
       z-index: 1;
       max-width: 1100px;
-      margin: 20px auto;
+      margin: 10px auto 30px;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -103,6 +204,7 @@
     }
 
     .foto {
+      position: relative;
       background: white;
       padding: 12px;
       border-radius: 18px;
@@ -136,7 +238,32 @@
       color: #85576a;
     }
 
-    /* Carta */
+    /* Botón eliminar foto personalizada */
+    .btn-eliminar {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(217, 79, 112, 0.85);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+      z-index: 3;
+    }
+
+    .btn-eliminar:hover {
+      background: #a02040;
+    }
+
+    /* CARTA */
     .carta {
       position: relative;
       z-index: 1;
@@ -206,7 +333,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
@@ -231,13 +358,8 @@
     }
 
     @media (max-width: 600px) {
-      header {
-        padding-top: 55px;
-      }
-
-      .foto img {
-        height: 300px;
-      }
+      header { padding-top: 55px; }
+      .foto img { height: 300px; }
     }
   </style>
 </head>
@@ -257,8 +379,42 @@
     </p>
   </header>
 
-  <!-- GALERÍA -->
-  <section class="galeria">
+  <!-- BANDEJA PARA AGREGAR MÁS QUADROS -->
+  <section class="bandeja-contenedor">
+    <button class="btn-toggle-bandeja" onclick="toggleBandeja()">
+      📸 ✨ Abrir bandeja para agregar más fotos
+    </button>
+
+    <div class="panel-bandeja" id="panelBandeja">
+      <h3>🖼️ Agregar un nuevo cuadro de foto</h3>
+      
+      <div class="grupo-campo">
+        <label>1. Selecciona una foto desde tu dispositivo:</label>
+        <input type="file" id="inputFotoArchivo" accept="image/*" onchange="convertirImagenABase64(event)">
+      </div>
+
+      <div class="divisor-o">— O SI PREFIERES —</div>
+
+      <div class="grupo-campo">
+        <label>2. Pega el enlace (URL) de una foto:</label>
+        <input type="text" id="inputFotoUrl" placeholder="https://ejemplo.com/mi-foto.jpg">
+      </div>
+
+      <div class="grupo-campo">
+        <label>Mensaje o frase bonita para la foto:</label>
+        <input type="text" id="inputFotoTexto" placeholder="Escribe un lindo recuerdo aquí... ❤️">
+      </div>
+
+      <button class="btn-guardar-cuadro" onclick="agregarNuevoCuadro()">
+        ❤️ Agregar Cuadro a la Galería
+      </button>
+    </div>
+  </section>
+
+  <!-- GALERÍA DE FOTOS -->
+  <section class="galeria" id="galeriaFotos">
+
+    <!-- Fotos por defecto -->
     <div class="foto" onclick="abrirModal(this)">
       <img src="1.jpeg" alt="Nuestro recuerdo">
       <p>Uno de mis momentos favoritos contigo ❤️</p>
@@ -288,6 +444,7 @@
       <img src="6.jpeg" alt="Mi amor">
       <p>Y espero que tengamos muchísimas más ❤️</p>
     </div>
+
   </section>
 
   <!-- CARTA -->
@@ -332,7 +489,107 @@
   </div>
 
   <script>
-    // Generador continuo de corazones flotantes
+    let imagenTemporalBase64 = "";
+
+    // 1. Mostrar / Ocultar Bandeja
+    function toggleBandeja() {
+      const panel = document.getElementById('panelBandeja');
+      panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // 2. Convertir imagen local cargada a Base64
+    function convertirImagenABase64(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagenTemporalBase64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // 3. Agregar nuevo cuadro de foto
+    function agregarNuevoCuadro() {
+      const urlInput = document.getElementById('inputFotoUrl').value.trim();
+      const textoInput = document.getElementById('inputFotoTexto').value.trim();
+
+      // Determinar el origen de la imagen (archivo subido o enlace URL)
+      let imgSrc = imagenTemporalBase64 || urlInput;
+
+      if (!imgSrc) {
+        alert("Por favor selecciona una foto o pega el enlace de una imagen.");
+        return;
+      }
+
+      const mensaje = textoInput || "Un momento especial más contigo ❤️";
+
+      const nuevoObjetoFoto = {
+        id: Date.now(),
+        src: imgSrc,
+        texto: mensaje
+      };
+
+      // Guardar en localStorage
+      guardarEnLocalStorage(nuevoObjetoFoto);
+
+      // Renderizar en la galería
+      crearElementoFoto(nuevoObjetoFoto);
+
+      // Limpiar formulario y cerrar panel
+      document.getElementById('inputFotoArchivo').value = "";
+      document.getElementById('inputFotoUrl').value = "";
+      document.getElementById('inputFotoTexto').value = "";
+      imagenTemporalBase64 = "";
+      toggleBandeja();
+    }
+
+    // 4. Crear elemento HTML de la foto
+    function crearElementoFoto(objetoFoto) {
+      const galeria = document.getElementById('galeriaFotos');
+      
+      const divFoto = document.createElement('div');
+      divFoto.classList.add('foto');
+      divFoto.setAttribute('data-id', objetoFoto.id);
+      divFoto.onclick = function() { abrirModal(this); };
+
+      divFoto.innerHTML = `
+        <button class="btn-eliminar" onclick="eliminarCuadro(event, ${objetoFoto.id})">🗑️</button>
+        <img src="${objetoFoto.src}" alt="Recuerdo guardado">
+        <p>${objetoFoto.texto}</p>
+      `;
+
+      galeria.appendChild(divFoto);
+    }
+
+    // 5. Manejo de LocalStorage
+    function guardarEnLocalStorage(foto) {
+      let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
+      fotosGuardadas.push(foto);
+      localStorage.setItem('fotosExtra', JSON.stringify(fotosGuardadas));
+    }
+
+    function cargarFotosGuardadas() {
+      let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
+      fotosGuardadas.forEach(foto => crearElementoFoto(foto));
+    }
+
+    function eliminarCuadro(event, id) {
+      event.stopPropagation(); // Evitar abrir el modal al hacer clic en eliminar
+      if (confirm("¿Quieres eliminar este cuadro de foto?")) {
+        let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
+        fotosGuardadas = fotosGuardadas.filter(f => f.id !== id);
+        localStorage.setItem('fotosExtra', JSON.stringify(fotosGuardadas));
+
+        const elem = document.querySelector(`.foto[data-id="${id}"]`);
+        if (elem) elem.remove();
+      }
+    }
+
+    // Cargar fotos adicionales guardadas previamente al iniciar
+    window.addEventListener('DOMContentLoaded', cargarFotosGuardadas);
+
+    // 6. Generador continuo de corazones flotantes
     const heartsContainer = document.getElementById('hearts-container');
     const heartSymbols = ['♥', '💖', '💕', '💗'];
 
@@ -358,7 +615,7 @@
 
     setInterval(createHeart, 500);
 
-    // Control de audio
+    // 7. Control de audio
     function reproducirMusica() {
       const cancion = document.getElementById("cancion");
       const btn = document.getElementById("btnMusica");
@@ -372,7 +629,7 @@
       }
     }
 
-    // Control de visor de fotos
+    // 8. Control de visor de fotos (Modal)
     function abrirModal(elemento) {
       const img = elemento.querySelector('img');
       const modal = document.getElementById('modalFoto');
