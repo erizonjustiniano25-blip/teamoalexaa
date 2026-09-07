@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Para el amor de mi vida ❤️</title>
 
-  <!-- SDKs de Firebase (Compatibles para HTML directo) -->
+  <!-- SDKs de Firebase compatibles con HTML directo -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
@@ -84,7 +84,7 @@
       50% { transform: scale(1.2); }
     }
 
-    /* Bandeja */
+    /* BANDEJA DE SUBIDA DE FOTOS */
     .bandeja-contenedor {
       position: relative;
       z-index: 2;
@@ -174,7 +174,7 @@
       cursor: not-allowed;
     }
 
-    /* Galería */
+    /* GALERÍA DE FOTOS */
     .galeria {
       position: relative;
       z-index: 1;
@@ -240,7 +240,7 @@
       background: #a02040;
     }
 
-    /* Carta */
+    /* CARTA DE AMOR */
     .carta {
       position: relative;
       z-index: 1;
@@ -345,7 +345,7 @@
       <h3>🖼️ Agregar un nuevo cuadro de foto</h3>
       
       <div class="grupo-campo">
-        <label>1. Selecciona una foto desde tu dispositivo:</label>
+        <label>1. Selecciona una foto desde tu celular o PC:</label>
         <input type="file" id="inputFotoArchivo" accept="image/*">
       </div>
 
@@ -365,39 +365,8 @@
     </div>
   </section>
 
-  <!-- GALERÍA DE FOTOS -->
-  <section class="galeria" id="galeriaFotos">
-    <!-- Fotos estáticas por defecto (archivos locales) -->
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="1.jpeg" alt="Nuestro recuerdo">
-      <p>Uno de mis momentos favoritos contigo ❤️</p>
-    </div>
-
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="2.jpeg" alt="Mi niña">
-      <p>Qué bonito es compartir la vida contigo ✨</p>
-    </div>
-
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="3.jpeg" alt="Un momento juntos">
-      <p>Tu sonrisa hace bonito cualquier día 🌸</p>
-    </div>
-
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="4.jpeg" alt="Un recuerdo">
-      <p>Contigo, hasta los momentos simples son especiales 💕</p>
-    </div>
-
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="5.jpeg" alt="Nuestro momento">
-      <p>Una foto más de la persona que adoro 🥰</p>
-    </div>
-
-    <div class="foto" onclick="abrirModal(this)">
-      <img src="6.jpeg" alt="Mi amor">
-      <p>Y espero que tengamos muchísimas más ❤️</p>
-    </div>
-  </section>
+  <!-- GALERÍA DE FOTOS (Carga dinámica desde Firebase) -->
+  <section class="galeria" id="galeriaFotos"></section>
 
   <!-- CARTA -->
   <section class="carta">
@@ -439,51 +408,41 @@
   </div>
 
   <script>
-    // Configuración de Firebase enviada
+    // Configuración con tus credenciales reales
     const firebaseConfig = {
-      apiKey: "AIzaSyDexample1234567890",
-      authDomain: "mi-pagina-amor.firebaseapp.com",
-      projectId: "mi-pagina-amor",
-      storageBucket: "mi-pagina-amor.appspot.com",
-      messagingSenderId: "123456789012",
-      appId: "1:123456789012:web:abc123def456"
+      apiKey: "AIzaSyD25eqgX3x0kod85cLX5WnVc0hqbbyMjyM",
+      authDomain: "mioo-d9967.firebaseapp.com",
+      projectId: "mioo-d9967",
+      storageBucket: "mioo-d9967.firebasestorage.app",
+      messagingSenderId: "896783663188",
+      appId: "1:896783663188:web:3aae2c37f0cb7fb0066dc1",
+      measurementId: "G-6MF7R488GV"
     };
 
-    // Inicialización de Firebase
-    let db = null;
-    let storage = null;
-    let firebaseActivo = false;
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
-    try {
-      if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyDexample1234567890") {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        storage = firebase.storage();
-        firebaseActivo = true;
+    // ESCUCHAR CAMBIOS EN TIEMPO REAL DESDE CUALQUIER DISPOSITIVO
+    db.collection("fotos").orderBy("fecha", "asc").onSnapshot((snapshot) => {
+      const galeria = document.getElementById('galeriaFotos');
+      galeria.innerHTML = ""; 
+
+      if (snapshot.empty) {
+        galeria.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #85576a;'>Aún no hay fotos. ¡Sé el primero en subir una! ❤️</p>";
+        return;
       }
-    } catch (e) {
-      console.warn("Firebase no configurado totalmente todavía. Se usará el modo local de respaldo.", e);
-    }
 
-    // 1. Sincronización en tiempo real desde Firebase (Si está activo)
-    if (firebaseActivo && db) {
-      db.collection("fotos").orderBy("fecha", "asc").onSnapshot((snapshot) => {
-        // Remover fotos dinámicas anteriores antes de volver a dibujar
-        document.querySelectorAll('.foto-dinamica').forEach(el => el.remove());
-
-        snapshot.forEach((doc) => {
-          const datos = doc.data();
-          crearElementoFoto(doc.id, datos.url, datos.texto);
-        });
-      }, (error) => {
-        console.error("Error al escuchar cambios en Firestore:", error);
+      snapshot.forEach((doc) => {
+        const datos = doc.data();
+        crearElementoFoto(doc.id, datos.url, datos.texto);
       });
-    } else {
-      // Cargar modo local de respaldo si no hay conexión activa a la base de datos
-      window.addEventListener('DOMContentLoaded', cargarFotosLocales);
-    }
+    }, (error) => {
+      console.error("Error al conectar con la base de datos:", error);
+    });
 
-    // 2. Proceso de subida de fotos
+    // SUBIR FOTO
     async function subirFotoAFirebase() {
       const archivoInput = document.getElementById('inputFotoArchivo');
       const urlInput = document.getElementById('inputFotoUrl').value.trim();
@@ -492,75 +451,53 @@
 
       const mensaje = textoInput || "Un momento especial más contigo ❤️";
 
-      if (firebaseActivo && db && storage) {
-        try {
-          btnSubir.disabled = true;
-          btnSubir.innerText = "⏳ Guardando foto...";
+      try {
+        btnSubir.disabled = true;
+        btnSubir.innerText = "⏳ Subiendo foto...";
 
-          let urlFinal = urlInput;
+        let urlFinal = urlInput;
 
-          // Subir archivo a Storage si seleccionó una imagen
-          if (archivoInput.files[0]) {
-            const archivo = archivoInput.files[0];
-            const nombreUnico = Date.now() + "_" + archivo.name;
-            const refStorage = storage.ref().child("fotos/" + nombreUnico);
-            await refStorage.put(archivo);
-            urlFinal = await refStorage.getDownloadURL();
-          }
+        // Subir archivo a Storage si se seleccionó una imagen
+        if (archivoInput.files[0]) {
+          const archivo = archivoInput.files[0];
+          const nombreUnico = Date.now() + "_" + archivo.name;
+          const refStorage = storage.ref().child("fotos/" + nombreUnico);
+          
+          await refStorage.put(archivo);
+          urlFinal = await refStorage.getDownloadURL();
+        }
 
-          if (!urlFinal) {
-            alert("Por favor selecciona una foto o ingresa un enlace.");
-            btnSubir.disabled = false;
-            btnSubir.innerText = "❤️ Guardar en la Base de Datos";
-            return;
-          }
-
-          // Guardar registro en Firestore
-          await db.collection("fotos").add({
-            url: urlFinal,
-            texto: mensaje,
-            fecha: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          limpiarFormulario();
-          toggleBandeja();
-        } catch (error) {
-          console.error("Error al subir a Firebase:", error);
-          alert("Error al guardar: " + error.message);
-        } finally {
+        if (!urlFinal) {
+          alert("Por favor selecciona una imagen desde tu celular o pega un enlace.");
           btnSubir.disabled = false;
           btnSubir.innerText = "❤️ Guardar en la Base de Datos";
-        }
-      } else {
-        // Modo local de contingencia (localStorage)
-        let imgSrc = urlInput;
-        if (archivoInput.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            guardarFotoLocal({ id: Date.now(), src: e.target.result, texto: mensaje });
-            limpiarFormulario();
-            toggleBandeja();
-          };
-          reader.readAsDataURL(archivoInput.files[0]);
           return;
         }
 
-        if (!imgSrc) {
-          alert("Por favor selecciona una foto o pega un enlace.");
-          return;
-        }
+        // Guardar en la Base de Datos (Firestore)
+        await db.collection("fotos").add({
+          url: urlFinal,
+          texto: mensaje,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        });
 
-        guardarFotoLocal({ id: Date.now(), src: imgSrc, texto: mensaje });
         limpiarFormulario();
         toggleBandeja();
+
+      } catch (error) {
+        console.error("Error al subir:", error);
+        alert("Error al subir la foto. Asegúrate de actualizar las Reglas de Firebase. Error: " + error.message);
+      } finally {
+        btnSubir.disabled = false;
+        btnSubir.innerText = "❤️ Guardar en la Base de Datos";
       }
     }
 
-    // Creación de cuadro visual de foto
+    // MOSTRAR FOTOS EN PANTALLA
     function crearElementoFoto(id, url, texto) {
       const galeria = document.getElementById('galeriaFotos');
       const divFoto = document.createElement('div');
-      divFoto.classList.add('foto', 'foto-dinamica');
+      divFoto.classList.add('foto');
       divFoto.setAttribute('data-id', id);
       divFoto.onclick = function() { abrirModal(this); };
 
@@ -573,37 +510,16 @@
       galeria.appendChild(divFoto);
     }
 
-    // Eliminación de fotos
+    // ELIMINAR FOTO
     async function eliminarCuadro(event, id) {
       event.stopPropagation();
-      if (confirm("¿Quieres eliminar este cuadro de foto?")) {
-        if (firebaseActivo && db) {
-          try {
-            await db.collection("fotos").doc(id).delete();
-          } catch (e) {
-            alert("Error al eliminar: " + e.message);
-          }
-        } else {
-          let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
-          fotosGuardadas = fotosGuardadas.filter(f => f.id != id);
-          localStorage.setItem('fotosExtra', JSON.stringify(fotosGuardadas));
-          const elem = document.querySelector(`.foto[data-id="${id}"]`);
-          if (elem) elem.remove();
+      if (confirm("¿Quieres borrar esta foto para ambos?")) {
+        try {
+          await db.collection("fotos").doc(id).delete();
+        } catch (e) {
+          alert("Error al borrar: " + e.message);
         }
       }
-    }
-
-    // Funciones locales de apoyo
-    function guardarFotoLocal(objetoFoto) {
-      let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
-      fotosGuardadas.push(objetoFoto);
-      localStorage.setItem('fotosExtra', JSON.stringify(fotosGuardadas));
-      crearElementoFoto(objetoFoto.id, objetoFoto.src, objetoFoto.texto);
-    }
-
-    function cargarFotosLocales() {
-      let fotosGuardadas = JSON.parse(localStorage.getItem('fotosExtra')) || [];
-      fotosGuardadas.forEach(f => crearElementoFoto(f.id, f.src, f.texto));
     }
 
     function limpiarFormulario() {
@@ -612,7 +528,6 @@
       document.getElementById('inputFotoTexto').value = "";
     }
 
-    // Control de Interfaz
     function toggleBandeja() {
       const panel = document.getElementById('panelBandeja');
       panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
@@ -641,7 +556,7 @@
       }
     }
 
-    // Animación de corazones flotantes
+    // CORAZONES FLOTANTES
     const heartsContainer = document.getElementById('hearts-container');
     const heartSymbols = ['♥', '💖', '💕', '💗'];
 
