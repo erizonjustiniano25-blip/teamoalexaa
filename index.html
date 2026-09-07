@@ -357,6 +357,100 @@
       cursor: pointer;
     }
 
+
+    /* SNOOPY + MENSAJITOS AL HACER CLIC */
+    .snoopy-mensaje {
+      position: fixed;
+      z-index: 9999;
+      width: min(340px, calc(100vw - 30px));
+      padding: 18px 20px 20px;
+      background: rgba(255, 255, 255, 0.97);
+      border: 3px solid #ffc1d1;
+      border-radius: 24px;
+      box-shadow: 0 14px 35px rgba(160, 80, 110, 0.25);
+      text-align: center;
+      pointer-events: none;
+      animation: snoopyEntrada 0.45s cubic-bezier(.2,.8,.2,1) forwards,
+                 snoopySalida 0.5s ease 3.8s forwards;
+      transform-origin: center;
+    }
+
+    .snoopy-mensaje::before {
+      content: "♥  ✨  ♥";
+      display: block;
+      color: #ff8fab;
+      font-size: 17px;
+      letter-spacing: 5px;
+      margin-bottom: 3px;
+    }
+
+    .snoopy-dibujo {
+      font-size: 54px;
+      line-height: 1;
+      margin-bottom: 7px;
+      animation: snoopyBrinquito 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 3px 2px rgba(0,0,0,0.08));
+    }
+
+    .snoopy-mensaje .snoopy-texto {
+      color: #6d3f52;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .snoopy-corazones {
+      margin-top: 9px;
+      font-size: 20px;
+      letter-spacing: 4px;
+    }
+
+    @keyframes snoopyEntrada {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.75) rotate(-4deg);
+      }
+      70% {
+        transform: translateY(-4px) scale(1.04) rotate(2deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+      }
+    }
+
+    @keyframes snoopySalida {
+      to {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.92);
+      }
+    }
+
+    @keyframes snoopyBrinquito {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-5px) rotate(2deg); }
+    }
+
+    .click-corazon {
+      position: fixed;
+      z-index: 9998;
+      pointer-events: none;
+      color: #ff7f9d;
+      font-size: 18px;
+      animation: clickCorazon 1s ease-out forwards;
+    }
+
+    @keyframes clickCorazon {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(.5);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -85px) scale(1.3) rotate(15deg);
+      }
+    }
+
     @media (max-width: 600px) {
       header { padding-top: 55px; }
       .foto img { height: 300px; }
@@ -367,6 +461,14 @@
 <body>
 
   <div id="hearts-container"></div>
+
+  <!-- Mensajito tierno de Snoopy: aparece al hacer clic -->
+  <div id="snoopyMensaje" class="snoopy-mensaje" style="display:none;">
+    <div class="snoopy-dibujo">🐶</div>
+    <div class="snoopy-texto" id="snoopyTexto"></div>
+    <div class="snoopy-corazones">💕 ✨ 💕</div>
+  </div>
+
 
   <!-- Encabezado -->
   <header>
@@ -641,6 +743,98 @@
     function cerrarModal() {
       document.getElementById('modalFoto').style.display = 'none';
     }
+
+    // 9. Snoopy: mensaje romántico aleatorio al hacer clic
+    const mensajesSnoopy = [
+      "Eres mi persona favorita en todo el mundo. 🥺❤️",
+      "Contigo hasta los días normales se sienten especiales. 🌸💕",
+      "Snoopy dice que eres demasiado bonita para no sonreír hoy. 🐶💗",
+      "Si pudiera elegir otra vez, te elegiría a ti una y otra vez. 💞",
+      "Solo quería recordarte que te quiero muchísimo. 🥰❤️",
+      "Tu sonrisa es uno de mis lugares favoritos. ✨🌷",
+      "No importa dónde esté, siempre hay una parte de mí pensando en ti. 💕",
+      "Contigo quiero muchos recuerdos, muchas risas y muchos abrazos. 🫶🏻💖",
+      "Eres ese pedacito bonito que hace mejor mi vida. 🌸❤️",
+      "Snoopy pasó por aquí para decirte: eres muy, muy especial. 🐶✨",
+      "Ojalá pudiera darte un abrazo cada vez que pienses en mí. 🤗💕",
+      "Te elegiría incluso en otra vida. ❤️🌙",
+      "Gracias por existir y por hacer mis días más bonitos. 🌷🥰",
+      "Un mensajito secreto: te quiero más de lo que imaginas. 🤫💗",
+      "Hoy, mañana y en todos mis días favoritos: tú. 💕✨",
+      "No necesitas una razón para sonreír... pero aquí tienes una: yo te quiero. 🥹❤️",
+      "Snoopy recomienda un abrazo enorme y muchos besitos. 🐶💋💕",
+      "Eres mi pensamiento bonito del día. 🌸💖"
+    ];
+
+    let ultimoMensajeSnoopy = -1;
+    let temporizadorSnoopy;
+
+    function mostrarMensajeSnoopy(x, y) {
+      const tarjeta = document.getElementById("snoopyMensaje");
+      const texto = document.getElementById("snoopyTexto");
+
+      let indice;
+      do {
+        indice = Math.floor(Math.random() * mensajesSnoopy.length);
+      } while (mensajesSnoopy.length > 1 && indice === ultimoMensajeSnoopy);
+
+      ultimoMensajeSnoopy = indice;
+      texto.textContent = mensajesSnoopy[indice];
+
+      // Mantener la tarjeta dentro de la pantalla
+      const ancho = Math.min(340, window.innerWidth - 30);
+      const izquierda = Math.max(15, Math.min(x - ancho / 2, window.innerWidth - ancho - 15));
+      const arriba = Math.max(15, Math.min(y - 145, window.innerHeight - 210));
+
+      tarjeta.style.width = ancho + "px";
+      tarjeta.style.left = izquierda + "px";
+      tarjeta.style.top = arriba + "px";
+      tarjeta.style.display = "block";
+
+      // Reiniciar la animación cada vez
+      tarjeta.style.animation = "none";
+      void tarjeta.offsetWidth;
+      tarjeta.style.animation =
+        "snoopyEntrada 0.45s cubic-bezier(.2,.8,.2,1) forwards, " +
+        "snoopySalida 0.5s ease 3.8s forwards";
+
+      clearTimeout(temporizadorSnoopy);
+      temporizadorSnoopy = setTimeout(() => {
+        tarjeta.style.display = "none";
+      }, 4300);
+
+      // Mini corazones que salen desde el punto del clic
+      const simbolos = ["♥", "♡", "💕", "✨"];
+      for (let i = 0; i < 4; i++) {
+        const corazon = document.createElement("span");
+        corazon.className = "click-corazon";
+        corazon.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+        corazon.style.left = (x + (Math.random() * 36 - 18)) + "px";
+        corazon.style.top = (y + (Math.random() * 20 - 10)) + "px";
+        corazon.style.animationDelay = (Math.random() * 0.15) + "s";
+        document.body.appendChild(corazon);
+
+        setTimeout(() => corazon.remove(), 1200);
+      }
+    }
+
+    // Solo reaccionar al clic normal; botones, fotos y controles conservan su función.
+    document.addEventListener("click", function(event) {
+      const elemento = event.target;
+
+      if (
+        elemento.closest("button") ||
+        elemento.closest("input") ||
+        elemento.closest("audio") ||
+        elemento.closest(".modal") ||
+        elemento.closest(".snoopy-mensaje")
+      ) {
+        return;
+      }
+
+      mostrarMensajeSnoopy(event.clientX, event.clientY);
+    });
+
   </script>
 
 </body>
