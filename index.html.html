@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para el amor de mi vida ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+      color: #5a3545;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Corazones flotando */
+    .heart {
+      position: fixed;
+      color: #ff8fab;
+      font-size: 25px;
+      animation: float 8s linear infinite;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 80px 20px 50px;
+    }
+
+    .titulo {
+      font-size: clamp(2.3rem, 7vw, 5rem);
+      color: #d94f70;
+      margin-bottom: 15px;
+    }
+
+    .subtitulo {
+      font-size: 1.2rem;
+      color: #815466;
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.7;
+    }
+
+    .corazon {
+      font-size: 45px;
+      animation: latido 1.3s infinite;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    @keyframes latido {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    /* Galería */
+    .galeria {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .foto {
+      background: white;
+      padding: 12px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(160, 80, 110, 0.15);
+      transition: 0.4s;
+      transform: rotate(-1deg);
+    }
+
+    .foto:nth-child(even) {
+      transform: rotate(1deg);
+    }
+
+    .foto:hover {
+      transform: translateY(-10px) rotate(0deg) scale(1.02);
+    }
+
+    .foto img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .foto p {
+      text-align: center;
+      padding: 15px 5px 8px;
+      font-size: 1rem;
+      color: #85576a;
+    }
+
+    /* Carta */
+    .carta {
+      position: relative;
+      z-index: 1;
+      max-width: 750px;
+      margin: 70px auto;
+      padding: 45px 30px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(160, 80, 110, 0.12);
+      text-align: center;
+    }
+
+    .carta h2 {
+      color: #d94f70;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .carta p {
+      font-size: 1.1rem;
+      line-height: 1.9;
+    }
+
+    .firma {
+      margin-top: 25px;
+      font-size: 1.3rem;
+      color: #d94f70;
+      font-weight: bold;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      color: #9b6578;
+    }
+
+    /* Botón música */
+    .musica {
+      margin-top: 25px;
+      border: none;
+      background: #d94f70;
+      color: white;
+      padding: 13px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .musica:hover {
+      background: #b83f5d;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding-top: 55px;
+      }
+
+      .foto img {
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Corazones -->
+  <div class="heart" style="left:10%; animation-delay:0s;">♥</div>
+  <div class="heart" style="left:25%; animation-delay:2s;">♥</div>
+  <div class="heart" style="left:45%; animation-delay:4s;">♥</div>
+  <div class="heart" style="left:65%; animation-delay:1s;">♥</div>
+  <div class="heart" style="left:85%; animation-delay:3s;">♥</div>
+
+  <!-- Encabezado -->
+  <header>
+    <div class="corazon">❤️</div>
+
+    <h1 class="titulo">Para mi niña hermosa</h1>
+
+    <p class="subtitulo">
+      Hice este pequeño rincón para guardar algunos de mis
+      recuerdos favoritos contigo. Porque cada foto cuenta
+      una historia y cada historia contigo es especial. ❤️
+    </p>
+  </header>
+
+
+  <!-- GALERÍA -->
+  <section class="galeria">
+
+    <div class="foto">
+      <img src="(1).jpeg" alt="Nuestro recuerdo">
+      <p>Uno de mis momentos favoritos contigo ❤️</p>
+    </div>
+
+    <div class="foto">
+      <img src="(2).jpeg" alt="Mi niña">
+      <p>Tu sonrisa hace bonito cualquier día 🌸</p>
+    </div>
+
+    <div class="foto">
+      <img src="(3).jpeg" alt="Un momento juntos">
+      <p>Qué bonito es compartir la vida contigo ✨</p>
+    </div>
+
+    <div class="foto">
+      <img src="(4).jpeg" alt="Nuestro momento">
+      <p>Contigo, hasta los momentos simples son especiales 💕</p>
+    </div>
+
+    <div class="foto">
+      <img src="(5).jpeg" alt="Un recuerdo">
+      <p>Una foto más de la persona que adoro 🥰</p>
+    </div>
+
+    <div class="foto">
+      <img src="(6).jpeg" alt="Mi amor">
+      <p>Y espero que tengamos muchísimas más ❤️</p>
+    </div>
+
+  </section>
+
+
+  <!-- CARTA -->
+  <section class="carta">
+
+    <h2>Una pequeña carta para ti 💌</h2>
+
+    <p>
+      No sé si una página pueda explicar todo lo que siento por ti,
+      pero quería crear este pequeño lugar para recordarte lo
+      importante que eres para mí.
+      <br><br>
+
+      Gracias por cada sonrisa, cada abrazo, cada conversación
+      y cada momento que hemos compartido.
+      <br><br>
+
+      Si pudiera elegir nuevamente a alguien para vivir todos
+      estos momentos, te elegiría a ti una y otra vez.
+      ❤️
+    </p>
+
+    <div class="firma">
+      Con todo mi amor,<br>
+      Tu niño ❤️
+    </div>
+
+  </section>
+
+
+  <footer>
+    Hecho con mucho amor ❤️
+    <br>
+    <button class="musica" onclick="reproducirMusica()">
+      🎵 Reproducir nuestra canción
+    </button>
+  </footer>
+
+
+  <!-- Música -->
+  <audio id="cancion" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+
+  <script>
+    function reproducirMusica() {
+      const cancion = document.getElementById("cancion");
+
+      if (cancion.paused) {
+        cancion.play();
+      } else {
+        cancion.pause();
+      }
+    }
+  </script>
+
+</body>
+</html>
